@@ -1,0 +1,32 @@
+name: Docker Image MiniPrueba
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+
+jobs:
+  generate-docs:
+    # Se ejecuta en la última versión de ubuntu.
+    runs-on: ubuntu-latest
+    steps:
+      # Clonar el repo.
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Configurar JDK y Maven
+      - name: Setup Java JDK and Maven
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+
+      - name: upload image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: vigote/miniprueba:latest
